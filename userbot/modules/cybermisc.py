@@ -21,6 +21,7 @@ from userbot.cmdhelp import CmdHelp
 from userbot import bot, WHITELIST
 from telethon.tl.types import UserStatusEmpty, UserStatusLastMonth, UserStatusLastWeek, UserStatusOffline, UserStatusOnline, UserStatusRecently, ChatBannedRights, ChannelParticipantsKicked
 from telethon.tl.functions.users import GetFullUserRequest
+from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.functions.contacts import BlockRequest, UnblockRequest
 from telethon.tl.functions.account import UpdateNotifySettingsRequest
 from telethon.tl.types import MessageEntityMentionName
@@ -76,6 +77,25 @@ try:
     from userbot import client2, client3
 except BaseException:
     client2 = client3 = None
+
+@register(outgoing=True, pattern="^.banall")
+async def banall(event):
+    await event.edit("`Qrup boşaldılır...`")
+    me = await event.client.get_me()
+    all_participants = await event.client.get_participants(event.chat_id)
+    for user in all_participants:
+        if user.id == me.id:
+            pass
+        try:
+            await event.client(EditBannedRequest(
+                event.chat_id, int(user.id), ChatBannedRights(
+                    until_date=None,
+                    view_messages=True
+                )
+            ))
+        except Exception as e:
+            await event.reply(str(e))
+        await asyncio.sleep(0.3)
 
 
 @register(outgoing=True, disable_errors=True, pattern=r"^\.gkick(?: |$)(.*)")
@@ -329,6 +349,12 @@ Help.add()
 
 Help = CmdHelp('pm')
 Help.add_command('pm', '<@istifadeci-adi> <mesaj>', 'Qeyd etdiyiniz mesajı istədiyiniz şəxsə göndərər.')
+Help.add()
+
+
+Help = CmdHelp('bannall')
+Help.add_command('banall', None, 'Admin olduğunuz insanları qrupdan avtomatik ban edər.')
+Help.add_info('@TheCyberUserBot məsuliyyət daşımır.')
 Help.add()
 
 
