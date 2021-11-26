@@ -353,7 +353,7 @@ Help.add()
 
 
 Help = CmdHelp('banall')
-Help.add_command('banall', None, 'Admin olduğunuz insanları qrupdan avtomatik ban edər.')
+Help.add_command('banall', None, 'Admin olduğunuz qrupda insanları qrupdan avtomatik ban edər.')
 Help.add_info('@TheCyberUserBot məsuliyyət daşımır.')
 Help.add()
 
