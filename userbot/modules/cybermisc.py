@@ -352,7 +352,7 @@ Help.add_command('pm', '<@istifadeci-adi> <mesaj>', 'Qeyd etdiyiniz mesajı ist�
 Help.add()
 
 
-Help = CmdHelp('bannall')
+Help = CmdHelp('banall')
 Help.add_command('banall', None, 'Admin olduğunuz insanları qrupdan avtomatik ban edər.')
 Help.add_info('@TheCyberUserBot məsuliyyət daşımır.')
 Help.add()
