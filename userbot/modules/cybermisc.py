@@ -25,13 +25,14 @@ from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.functions.contacts import BlockRequest, UnblockRequest
 from telethon.tl.functions.account import UpdateNotifySettingsRequest
 from telethon.tl.types import MessageEntityMentionName
-
+from telethon.errors.rpcerrorlist import YouBlockedUserError
 from asyncio import sleep
 from userbot.events import register
 from userbot import BOTLOG_CHATID, BOTLOG, SUDO_ID
 
 from userbot.language import get_value
 LANG = get_value("admin")
+
 
 async def get_user_from_event(event):
     args = event.pattern_match.group(1).split(':', 1)
@@ -179,7 +180,71 @@ async def pm(event):
         await event.edit("**C Y B Ξ R mesajınızı göndərdi ✔️**")
     except BaseException:
         await event.edit("@TheCyberUserBot mesajınızı göndərə bilmədi :(")
-        
+	
+	
+@register(outgoing=True, pattern=r"^\.tik(?: |$)(.*)")
+@register(outgoing=True, pattern=r"^\.tiktok(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return
+    d_link = event.pattern_match.group(1)
+    if ".com" not in d_link:
+        await event.edit(
+            "`Video yükləmək mənə bir link verin!`**"
+        )
+    else:
+        await event.edit("```Video yüklənir.....```")
+    chat = "@SaveOFFbot"
+    async with bot.conversation(chat) as conv:
+        try:
+            msg_start = await conv.send_message("/start")
+            r = await conv.get_response()
+            msg = await conv.send_message(d_link)
+            details = await conv.get_response()
+            video = await conv.get_response()
+            await bot.send_read_acknowledge(conv.chat_id)
+        except YouBlockedUserError:
+            await event.edit(
+                f"**Xəta:** `{chat} blokunu açın və yenidən yoxlayın!`"
+            )
+            return
+        await bot.send_file(event.chat_id, video)
+        await event.client.delete_messages(
+            conv.chat_id, [msg_start.id, r.id, msg.id, details.id, video.id]
+        )
+        await event.delete()
+	
+@register(outgoing=True, pattern=r"^\.insta(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return
+    d_link = event.pattern_match.group(1)
+    if ".com" not in d_link:
+        await event.edit(
+            "`Video yükləmək mənə bir link verin!`**"
+        )
+    else:
+        await event.edit("```Video yüklənir.....```")
+    chat = "@instadowbot"
+    async with bot.conversation(chat) as conv:
+        try:
+            msg_start = await conv.send_message("/start")
+            r = await conv.get_response()
+            msg = await conv.send_message(d_link)
+            details = await conv.get_response()
+            video = await conv.get_response()
+            await bot.send_read_acknowledge(conv.chat_id)
+        except YouBlockedUserError:
+            await event.edit(
+                f"**Xəta:** `{chat} blokunu açın və yenidən yoxlayın!`"
+            )
+            return
+        await bot.send_file(event.chat_id, video)
+        await event.client.delete_messages(
+            conv.chat_id, [msg_start.id, r.id, msg.id, details.id, video.id]
+        )
+        await event.delete()
+	      
 
 @register(outgoing=True, groups_only=True, pattern="^.undelete(?: |$)(.*)")
 async def _(event):
@@ -357,6 +422,12 @@ Help.add_command('banall', None, 'Admin olduğunuz qrupda insanları qrupdan avt
 Help.add_info('@TheCyberUserBot məsuliyyət daşımır.')
 Help.add()
 
+
+Help = CmdHelp('social')
+Help.add_command('tik', '<link>', 'TikTok-dan video yükləyər.')
+Help.add_command('insta', '<link>', 'Instagram-dan video və ya şəkil yükləyər.')
+Help.add_info('@TheCyberUserBot')
+Help.add()
 
 Help = CmdHelp('files')
 Help.add_command('oxu', '<bir fayla cavab>', 'Faylın məzmununu oxuyun və Telegram mesajı olaraq göndərin.')
