@@ -224,8 +224,39 @@ async def _(event):
             "`Video yükləmək mənə bir link verin!`**"
         )
     else:
-        await event.edit("```Video yüklənir.....```")
+        await event.edit("```Hazırlanır...```")
     chat = "@instadowbot"
+    async with bot.conversation(chat) as conv:
+        try:
+            msg_start = await conv.send_message("/start")
+            r = await conv.get_response()
+            msg = await conv.send_message(d_link)
+            details = await conv.get_response()
+            video = await conv.get_response()
+            await bot.send_read_acknowledge(conv.chat_id)
+        except YouBlockedUserError:
+            await event.edit(
+                f"**Xəta:** `{chat} blokunu açın və yenidən yoxlayın!`"
+            )
+            return
+        await bot.send_file(event.chat_id, video)
+        await event.client.delete_messages(
+            conv.chat_id, [msg_start.id, r.id, msg.id, details.id, video.id]
+        )
+        await event.delete()
+	
+@register(outgoing=True, pattern=r"^\.pinterest(?: |$)(.*)")
+async def _(event):
+    if event.fwd_from:
+        return
+    d_link = event.pattern_match.group(1)
+    if ".com" not in d_link:
+        await event.edit(
+            "`Video yükləmək mənə bir link verin!`**"
+        )
+    else:
+        await event.edit("```Hazırlanır...```")
+    chat = "@pinterest_downloaderbot"
     async with bot.conversation(chat) as conv:
         try:
             msg_start = await conv.send_message("/start")
@@ -426,6 +457,7 @@ Help.add()
 Help = CmdHelp('social')
 Help.add_command('tik', '<link>', 'TikTok-dan video yükləyər.')
 Help.add_command('insta', '<link>', 'Instagram-dan video və ya şəkil yükləyər.')
+Help.add_command('pinterest', '<link>', 'Pinterest-dən video və ya şəkil yükləyər.')
 Help.add_info('@TheCyberUserBot')
 Help.add()
 
