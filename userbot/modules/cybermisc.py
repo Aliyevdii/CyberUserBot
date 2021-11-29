@@ -190,10 +190,10 @@ async def _(event):
     d_link = event.pattern_match.group(1)
     if ".com" not in d_link:
         await event.edit(
-            "`Video yükləmək mənə bir link verin!`**"
+            "`Video yükləmək mənə bir link verin!`"
         )
     else:
-        await event.edit("```Video yüklənir.....```")
+        await event.edit("```Hazırlanır...```")
     chat = "@SaveOFFbot"
     async with bot.conversation(chat) as conv:
         try:
@@ -208,7 +208,7 @@ async def _(event):
                 f"**Xəta:** `{chat} blokunu açın və yenidən yoxlayın!`"
             )
             return
-        await bot.send_file(event.chat_id, video)
+        await bot.send_file(event.chat_id, video, caption="Downloaded by [C Y B Ξ R](https://t.me/TheCyberUserBot)")
         await event.client.delete_messages(
             conv.chat_id, [msg_start.id, r.id, msg.id, details.id, video.id]
         )
@@ -221,7 +221,7 @@ async def _(event):
     d_link = event.pattern_match.group(1)
     if ".com" not in d_link:
         await event.edit(
-            "`Video yükləmək mənə bir link verin!`**"
+            "`Video yükləmək mənə bir link verin!`"
         )
     else:
         await event.edit("```Hazırlanır...```")
@@ -239,7 +239,7 @@ async def _(event):
                 f"**Xəta:** `{chat} blokunu açın və yenidən yoxlayın!`"
             )
             return
-        await bot.send_file(event.chat_id, video)
+        await bot.send_file(event.chat_id, video, caption="Downloaded by [C Y B Ξ R](https://t.me/TheCyberUserBot)")
         await event.client.delete_messages(
             conv.chat_id, [msg_start.id, r.id, msg.id, details.id, video.id]
         )
@@ -250,9 +250,9 @@ async def _(event):
     if event.fwd_from:
         return
     d_link = event.pattern_match.group(1)
-    if ".com" not in d_link:
+    if ".it" not in d_link:
         await event.edit(
-            "`Video yükləmək mənə bir link verin!`**"
+            "`Video yükləmək mənə bir link verin!`"
         )
     else:
         await event.edit("```Hazırlanır...```")
@@ -270,7 +270,7 @@ async def _(event):
                 f"**Xəta:** `{chat} blokunu açın və yenidən yoxlayın!`"
             )
             return
-        await bot.send_file(event.chat_id, video)
+        await bot.send_file(event.chat_id, video, caption="Downloaded by [C Y B Ξ R](https://t.me/TheCyberUserBot)")
         await event.client.delete_messages(
             conv.chat_id, [msg_start.id, r.id, msg.id, details.id, video.id]
         )
